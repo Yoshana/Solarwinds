@@ -1,0 +1,245 @@
+/*
+.CHANGE_TEMPLATE_DESCRIPTION
+        This template change the access-list 10
+.CHANGE_TEMPLATE_TAGS
+	Cisco, interface, access-list 
+.PLATFORM_DESCRIPTION
+        Cisco IOS
+.PARAMETER_LABEL @ContextNode
+        NCM node
+.PARAMETER_LABEL @Interfaces
+        NCM Interfaces
+.PARAMETER_DESCRIPTION @ContextInterface
+        The node the template will operate on.  All templates require this by default. The target node is selected during the first part of the wizard so it will not be available for selection when defining values of variables. 
+*/
+script UpdateACL10OUT (NCM.Nodes @ContextNode)
+ {
+    // Search for 10 Interface 
+   foreach (@iface in @ContextNode.Interfaces)
+    {
+	         If (@iface.InterfaceDescription == 'GigabitEthernet0/0.1')
+           {
+              CLI
+              {
+                Conf t
+                 interface GigabitEthernet0/0.1
+                 no ip access-group GIGABITETHERNET0/0.1_INBOUND in
+                 exit
+                 !
+                 !
+no ip access-list extended GIGABITETHERNET0/0.1_INBOUND			   
+ip access-list extended GIGABITETHERNET0/0.1_INBOUND
+ remark 10 NETWORK FOR DDNS
+ permit udp 10.0.0.0 0.255.255.255 host 172.16.247.1 eq domain log
+ permit udp 10.0.0.0 0.255.255.255 host 172.17.246.1 eq domain log
+ permit udp 10.0.0.0 0.255.255.255 host 172.16.246.8 eq domain log
+ permit tcp 10.0.0.0 0.255.255.255 host 172.16.247.1 eq domain log
+ permit tcp 10.0.0.0 0.255.255.255 host 172.17.246.1 eq domain log
+ permit tcp 10.0.0.0 0.255.255.255 host 172.16.246.8 eq domain log
+ remark NTP
+ permit udp 10.0.0.0 0.255.255.255 172.16.0.0 0.1.255.255 eq ntp log
+ remark 10 NETWORK TO DNS VIPS
+ permit udp 10.0.0.0 0.255.255.255 host 172.16.247.11 eq domain log
+ permit udp 10.0.0.0 0.255.255.255 host 172.17.247.11 eq domain log
+ remark RLM access to NCR for Loyalty
+ permit tcp 10.0.0.15 0.255.255.0 host 153.69.60.158 eq www log
+ permit tcp 10.0.0.15 0.255.255.0 host 153.69.60.158 eq 443 log
+ permit tcp 10.0.0.15 0.255.255.0 host 153.69.60.158 eq 1099 log
+ permit tcp 10.0.0.15 0.255.255.0 host 153.69.60.173 eq 1099 log
+ permit tcp 10.0.0.15 0.255.255.0 host 153.69.61.172 eq 1099 log
+ permit tcp 10.0.0.11 0.255.255.0 host 206.123.121.24 eq www log
+ permit tcp 10.0.0.11 0.255.255.0 host 206.123.121.24 eq 443 log
+ permit tcp 10.0.0.11 0.255.255.0 host 206.123.121.24 eq 8082 log
+ permit tcp 10.0.0.11 0.255.255.0 host 206.123.121.25 eq www log
+ permit tcp 10.0.0.11 0.255.255.0 host 206.123.121.25 eq 443 log
+ permit tcp 10.0.0.11 0.255.255.0 host 206.123.121.25 eq 8082 log
+ permit tcp 10.0.0.11 0.255.255.0 host 206.123.121.27 eq www log
+ permit tcp 10.0.0.11 0.255.255.0 host 206.123.121.27 eq 443 log
+ permit tcp 10.0.0.11 0.255.255.0 host 206.123.121.27 eq 22 log
+ permit tcp 10.0.0.11 0.255.255.0 host 153.69.214.47 eq www log
+ permit tcp 10.0.0.11 0.255.255.0 host 153.69.214.47 eq 443 log
+ permit tcp 10.0.0.11 0.255.255.0 host 153.69.214.47 eq 8082 log
+ remark HTTP HTTPS TO VIP RANGE
+ permit tcp 10.0.0.10 0.255.255.0 172.16.0.0 0.1.255.255 eq www log
+ permit tcp 10.0.0.10 0.255.255.0 172.16.0.0 0.1.255.255 eq 443 log
+ permit tcp 10.0.0.10 0.255.255.0 192.168.192.0 0.0.3.255 eq www log
+ permit tcp 10.0.0.10 0.255.255.0 192.168.192.0 0.0.3.255 eq 443 log
+ remark DVR ACCESS FOR MARCH
+ permit tcp 10.0.0.10 0.255.255.0 host 172.17.255.67 eq www log
+ permit tcp 10.0.0.10 0.255.255.0 host 172.17.255.67 eq 443 log
+ permit tcp 10.0.0.10 0.255.255.0 host 172.16.255.82 eq 443 log
+ permit tcp 10.0.0.10 0.255.255.0 40.0.0.175 0.255.255.0 eq 443 log
+ permit tcp 10.0.0.10 0.255.255.0 40.0.0.176 0.255.255.0 eq 443 log
+ remark SITE CONTROLLER TO ATLANTA RCM SEVER
+ permit tcp 10.0.0.0 0.255.255.255 host 172.16.255.77 eq www log
+ permit tcp 10.0.0.0 0.255.255.255 host 172.16.255.77 eq 9998 log
+ permit tcp 10.0.0.0 0.255.255.255 host 172.16.255.32 eq www log
+ permit tcp 10.0.0.0 0.255.255.255 host 172.16.255.32 eq 9998 log
+ permit tcp 10.0.0.0 0.255.255.255 host 172.16.255.50 eq www log
+ permit tcp 10.0.0.0 0.255.255.255 host 172.16.255.50 eq 9998 log
+ remark RMC
+ permit tcp 10.0.0.0 0.255.255.255 host 172.17.40.20 eq 9998 log
+ permit tcp 10.0.0.0 0.255.255.255 host 172.17.40.21 eq 9998 log
+ permit tcp 10.0.0.0 0.255.255.255 host 172.17.40.20 eq www log
+ permit tcp 10.0.0.0 0.255.255.255 host 172.17.40.21 eq www log
+ remark DOMAIN CONTROLLER ACCESS
+ permit ip 10.0.0.0 0.255.255.255 host 192.168.252.1 log
+ permit ip 10.0.0.0 0.255.255.255 host 192.168.252.2 log
+ permit ip 10.0.0.0 0.255.255.255 host 192.168.251.1 log
+ permit ip 10.0.0.0 0.255.255.255 host 192.168.251.2 log
+ remark FIRST DATA ACCESS
+ permit tcp 10.0.0.0 0.255.255.255 204.0.0.0 0.255.255.255 eq 7734 log
+ permit tcp 10.0.0.0 0.255.255.255 204.0.0.0 0.255.255.255 eq 7735 log
+ permit tcp 10.0.0.0 0.255.255.255 204.0.0.0 0.255.255.255 eq 7738 log
+ permit icmp 10.0.0.0 0.255.255.255 204.0.0.0 0.255.255.255 log
+ remark NBS
+ permit tcp 10.0.0.0 0.255.255.255 host 192.168.50.19 eq 5014 log
+ permit icmp 10.0.0.0 0.255.255.255 host 192.168.50.19 log
+ permit tcp 10.0.0.15 0.255.255.0 host 63.131.152.38 eq 443 log
+ permit tcp 10.0.0.15 0.255.255.0 host 64.27.74.59 eq 443 log
+ permit tcp 10.0.0.15 0.255.255.0 host 64.191.157.149 eq 443 log
+ permit tcp 10.0.0.15 0.255.255.0 host 66.70.118.129 eq 443 log
+ remark INCOMM ACCESS
+ permit tcp 10.0.0.0 0.255.255.255 66.0.0.0 0.255.255.255 eq 6080 log
+ permit icmp 10.0.0.0 0.255.255.255 66.0.0.0 0.255.255.255 log
+ permit tcp 10.0.0.0 0.255.255.255 74.122.144.0 0.0.0.255 eq 6080 log
+ permit icmp 10.0.0.0 0.255.255.255 74.122.144.0 0.0.0.255 log
+ remark ADMINISTRATION
+ permit icmp 10.0.0.0 0.255.255.255 172.17.0.0 0.0.255.255 log
+ permit icmp 10.0.0.0 0.255.255.255 172.16.0.0 0.0.255.255 log
+ permit icmp 10.0.0.0 0.255.255.255 130.1.1.0 0.0.0.255 log
+ permit icmp 10.0.0.0 0.255.255.255 192.168.0.0 0.0.255.255 log
+ permit tcp 10.0.0.0 0.255.255.255 host 130.1.1.1 eq telnet log
+ remark DAMEWARE
+ permit tcp 10.0.0.0 0.255.255.255 eq 6129 172.16.0.0 0.1.255.255 log
+ permit tcp 10.0.0.0 0.255.255.255 eq 6129 192.168.252.0 0.0.0.255 log
+ remark CITRIX
+ permit tcp 10.0.0.0 0.255.255.255 172.16.254.0 0.0.0.255 eq 443 log
+ permit tcp 10.0.0.0 0.255.255.255 172.16.254.0 0.0.0.255 eq www log
+ permit tcp 10.0.0.0 0.255.255.255 172.16.255.0 0.0.0.255 eq www log
+ remark STORE PC TO IRONPORT
+ permit tcp 10.0.0.10 0.255.255.0 host 172.25.25.25 eq 8081 log
+ permit tcp 10.0.0.10 0.255.255.0 172.16.254.0 0.0.0.255 eq 8081 log
+ permit tcp 10.0.0.10 0.255.255.0 172.16.96.0 0.0.0.255 eq 8081 log
+ permit tcp 10.0.0.10 0.255.255.0 172.17.9.0 0.0.0.255 eq 8081 log
+ permit tcp 10.0.0.10 0.255.255.0 172.16.9.0 0.0.0.255 eq 8081 log
+ permit tcp 10.0.0.10 0.255.255.0 172.17.9.0 0.0.0.255 eq 9001 log
+ remark STORE PC TO INSITES
+ permit tcp 10.0.0.10 0.255.255.0 172.16.255.0 0.0.0.255 eq 443 log
+ remark LOGGING
+ permit tcp 10.0.0.10 0.255.255.0 host 172.16.255.151 eq 8081 log
+ remark CITRIX RSM
+ permit tcp 10.0.0.11 0.255.255.0 eq 9999 host 172.16.40.17 log
+ permit tcp 10.0.0.11 0.255.255.0 eq 9999 host 172.16.40.15 log
+ remark BIGFIX
+ permit tcp 10.0.0.0 0.255.255.255 192.168.252.0 0.0.0.255 eq 52311 log
+ permit udp 10.0.0.0 0.255.255.255 192.168.252.0 0.0.0.255 eq 52311 log
+ permit tcp 10.0.0.0 0.255.255.255 172.16.254.0 0.0.0.255 eq 52311 log
+ permit udp 10.0.0.0 0.255.255.255 172.16.254.0 0.0.0.255 eq 52311 log
+ permit tcp 10.0.0.0 0.255.255.255 172.16.255.0 0.0.0.255 eq 52311 log
+ permit udp 10.0.0.0 0.255.255.255 172.16.255.0 0.0.0.255 eq 52311 log
+ permit tcp 10.0.0.0 0.255.255.255 172.17.255.0 0.0.0.255 eq 52311 log
+ permit udp 10.0.0.0 0.255.255.255 172.17.255.0 0.0.0.255 eq 52311 log
+ permit tcp 10.0.0.0 0.255.255.255 172.17.254.0 0.0.0.255 eq 52311 log
+ permit udp 10.0.0.0 0.255.255.255 172.17.254.0 0.0.0.255 eq 52311 log
+ remark TRIPPWIRE
+ permit tcp 10.0.0.0 0.255.255.255 host 172.17.40.45 eq 9898 log
+ permit tcp 10.0.0.0 0.255.255.255 host 172.17.40.45 eq 8080 log
+ permit tcp 10.0.0.0 0.255.255.255 eq 9898 host 172.17.40.45 log
+ permit tcp 10.0.0.0 0.255.255.255 eq 8080 host 172.17.40.45 log
+ remark Outlook
+ permit tcp 10.0.0.10 0.255.255.0 host 192.168.194.175 eq www log
+ permit tcp 10.0.0.10 0.255.255.0 host 192.168.194.175 eq 443 log
+ remark SMTP
+ permit tcp 10.0.0.10 0.255.255.0 host 192.168.194.175 eq smtp log
+ permit tcp 10.0.0.0 0.255.255.255 host 172.16.254.100 eq smtp log
+ permit tcp 10.0.0.0 0.255.255.255 host 172.16.254.177 eq smtp log
+ remark SOPHOS
+ permit ip 10.0.0.0 0.255.255.255 host 172.16.255.25 log
+ permit ip 10.0.0.0 0.255.255.255 host 192.168.252.15 log
+ remark NESSUS
+ permit ip 10.0.0.0 0.255.255.255 host 172.16.94.60 log
+ permit ip 10.0.0.0 0.255.255.255 host 172.16.94.151 log
+ permit ip 10.0.0.0 0.255.255.255 host 172.16.94.152 log
+ permit ip 10.0.0.0 0.255.255.255 host 172.16.94.153 log
+ permit ip 10.0.0.0 0.255.255.255 host 172.16.94.101 log
+ permit ip 10.0.0.0 0.255.255.255 host 192.168.251.60 log
+ permit ip 10.0.0.0 0.255.255.255 host 192.168.251.61 log
+ permit ip 10.0.0.0 0.255.255.255 host 192.168.251.62 log
+ remark SHAVLIK
+ permit tcp 10.0.0.0 0.255.255.255 host 172.17.40.1 eq 3121 log
+ permit tcp 10.0.0.0 0.255.255.255 host 172.17.40.1 eq 443 log
+ remark CITRIX
+ permit tcp 10.0.0.0 0.255.255.255 172.16.254.0 0.0.0.255 eq 1688 log
+ permit tcp 10.0.0.0 0.255.255.255 172.16.254.0 0.0.0.255 eq 2598 log
+ permit tcp 10.0.0.0 0.255.255.255 172.16.255.0 0.0.0.255 eq 1688 log
+ permit tcp 10.0.0.0 0.255.255.255 172.16.255.0 0.0.0.255 eq 2598 log
+ remark INSIDE STORE ACCESS
+ permit ip 10.0.0.0 0.255.255.255 10.0.0.0 0.255.255.255 log
+ remark STORE PC TO DVR
+ permit tcp 10.0.0.0 0.255.255.255 40.0.0.0 0.255.255.255 eq www log
+ permit tcp 10.0.0.0 0.255.255.255 40.0.0.0 0.255.255.255 eq 443 log
+ permit tcp 10.0.0.0 0.255.255.255 40.0.0.0 0.255.255.255 eq 8080 log
+ permit icmp 10.0.0.0 0.255.255.255 40.0.0.0 0.255.255.255 echo log
+ remark Store PC to Test servers
+ permit tcp 10.0.0.10 0.255.255.0 172.16.29.0 0.0.0.255 eq www log
+ permit tcp 10.0.0.10 0.255.255.0 172.16.29.0 0.0.0.255 eq 443 log
+ remark MSMQ
+ permit tcp 10.0.0.0 0.255.255.255 172.17.29.0 0.0.0.255 eq 1801 log
+ permit tcp 10.0.0.0 0.255.255.255 172.16.254.0 0.0.0.255 eq 1801 log
+ permit tcp 10.0.0.0 0.255.255.255 172.16.255.0 0.0.0.255 eq 1801 log
+ permit tcp 10.0.0.0 0.255.255.255 172.16.29.0 0.0.0.255 eq 1801 log
+ permit tcp 10.0.0.0 0.255.255.255 eq 1801 172.16.254.0 0.0.0.255 log
+ permit tcp 10.0.0.0 0.255.255.255 eq 1801 172.16.29.0 0.0.0.255 log
+ permit tcp 10.0.0.0 0.255.255.255 host 130.1.1.159 eq 1801 log
+ permit tcp 10.0.0.0 0.255.255.255 eq 1801 host 130.1.1.126 log
+ remark SCAN PRO
+ permit tcp 10.0.0.0 0.255.255.255 host 172.16.254.164 eq 1445 log
+ permit tcp 10.0.0.0 0.255.255.255 host 172.16.254.44 eq 1445 log
+ permit tcp 10.0.0.10 0.255.255.0 host 172.16.255.92 eq 1445 log
+ permit tcp 10.0.0.10 0.255.255.0 host 172.16.255.79 eq 1445 log
+ permit tcp 10.0.0.0 0.255.255.255 host 172.17.255.45 eq 1445 log
+ permit tcp 10.0.0.0 0.255.255.255 host 172.16.255.104 eq 1445 log
+ remark KGSTOREWEB VIP
+ permit tcp 10.0.0.10 0.255.255.0 host 172.16.247.19 eq 8081 log
+ remark LOGGING
+ permit tcp 10.0.0.0 0.255.255.255 172.16.254.0 0.0.0.255 eq 1444 log
+ permit tcp 10.0.0.0 0.255.255.255 host 172.16.254.165 eq 1446 log
+ permit tcp 10.0.0.0 0.255.255.255 host 172.16.255.67 eq 1446 log
+ remark VOIP
+ permit tcp 10.0.0.0 0.255.255.255 host 172.16.110.220 log
+ permit tcp 10.0.0.0 0.255.255.255 host 172.16.110.221 log
+ permit udp 10.0.0.0 0.255.255.255 172.16.0.0 0.0.255.255 log
+ permit udp 10.0.0.0 0.255.255.255 10.0.0.0 0.255.255.255 log
+ permit udp 10.0.0.0 0.255.255.255 40.0.0.0 0.255.255.255 log
+ permit udp 10.0.0.0 0.255.255.255 host 192.168.252.73 log
+ permit tcp 10.0.0.0 0.255.255.255 eq www 172.16.0.0 0.0.255.255 log
+ remark PDI_TEST
+ permit tcp 10.0.0.0 0.255.255.255 host 172.17.29.6 eq www log
+ permit tcp 10.0.0.10 0.255.255.0 host 172.17.29.7 eq 1801 log
+ remark ZIPLINE
+ permit tcp 10.0.0.0 0.255.255.255 host 172.24.15.86 eq 3003 log
+ permit tcp 10.0.0.0 0.255.255.255 host 192.168.9.58 eq 3015 log
+ remark SOLARWINDS_NCM
+ permit tcp 10.0.0.0 0.255.255.255 host 172.17.40.23 eq www log
+ remark DENY
+ deny   ip any any log
+!
+                 interface GigabitEthernet0/0.1
+                 ip access-group GIGABITETHERNET0/0.1_INBOUND in
+                 end
+wr me
+	          }
+              
+  	       }
+	      }  
+        
+	  }
+ 
+    }
+	{
+   
+	}
+
+}	
+
